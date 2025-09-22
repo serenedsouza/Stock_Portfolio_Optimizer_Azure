@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stock Portfolio Optimizer</title>
+</head>
+<body>
+  <h2>Stock Portfolio Optimizer</h2>
+
+  <label>Investment Amount:</label>
+  <input type="number" id="amount" placeholder="Enter amount" required><br><br>
+
+  <label>Select Stocks:</label>
+  <select id="stocks" multiple>
+    <option>RELIANCE</option>
+    <option>TCS</option>
+    <option>INFY</option>
+    <option>HDFCBANK</option>
+    <option>ICICIBANK</option>
+    <option>SBIN</option>
+    <option>BAJFINANCE</option>
+    <option>ASIANPAINT</option>
+    <option>HINDUNILVR</option>
+    <option>ADANIENT</option>
+    <option>AAPL</option>
+    <option>MSFT</option>
+    <option>AMZN</option>
+    <option>TSLA</option>
+    <option>GOOGL</option>
+    <option>META</option>
+    <option>NVDA</option>
+    <option>JPM</option>
+    <option>JNJ</option>
+    <option>BRK.B</option>
+  </select><br><br>
+
+  <label>Risk Factor:</label>
+  <select id="risk">
+    <option value="low">Low</option>
+    <option value="medium">Medium</option>
+    <option value="high">High</option>
+  </select><br><br>
+
+  <label>Investment Period:</label>
+  <input type="number" id="period" min="1" required>
+  <select id="periodUnit">
+    <option value="days">Days</option>
+    <option value="weeks">Weeks</option>
+    <option value="months">Months</option>
+    <option value="years">Years</option>
+  </select><br><br>
+
+  <button onclick="submitForm()">Optimize Portfolio</button>
+
+  <pre id="result"></pre>
+
+  <script>
+    async function submitForm() {
+      const payload = {
+        amount: document.getElementById("amount").value,
+        stocks: Array.from(document.getElementById("stocks").selectedOptions).map(o=>o.value),
+        risk: document.getElementById("risk").value,
+        period: document.getElementById("period").value,
+        unit: document.getElementById("periodUnit").value
+      };
+      const res = await fetch("/optimize_portfolio", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
